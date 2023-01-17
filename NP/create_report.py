@@ -7,12 +7,14 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 import os
 from datetime import datetime
+from folder_in_MY_documents import make_documets_folder
 
 filename_data = datetime.now().day
 month_name = datetime.now().month
 current_year = datetime.now().year
 
-way_to_files = f"/Volumes/big4photo/Documents/NewProspect/{current_year}_{month_name}"  # путь к папке с изображениями
+# way_to_files = f"/Volumes/big4photo/Documents/NewProspect/{current_year}_{month_name}"  # путь к папке с изображениями
+way_to_files = f"{make_documets_folder('NewProspect')}/{current_year}_{month_name}"  # путь к папке с изображениями
 names = os.listdir(way_to_files)
 
 wb = Workbook()
@@ -28,8 +30,8 @@ for name in names:
     if name.endswith('JPG') or name.endswith('jpg'):
         count += 1
         ws.row_dimensions[count].height = 150  # задаю высоту столбца
-        print(f"/Volumes/big4photo/Documents/NewProspect/{current_year}_{month_name}/{name}")
-        img = Image(f"/Volumes/big4photo/Documents/NewProspect/{current_year}_{month_name}/{name}")
+        print(f"{way_to_files}/{name}")
+        img = Image(f"{way_to_files}/{name}")
         resize_height = img.height // 3  # уменьшая рарешение в два раза
         resize_width = img.width // 3  # уменьшая рарешение в два раза
 
@@ -41,4 +43,4 @@ for name in names:
         ws[f'B{count}'] = name.split("__")[1][:-4]
         ws[f'D{count}'] = 500
 
-wb.save(f"/Volumes/big4photo/Documents/NewProspect/report_{filename_data}.xlsx")
+wb.save(f"{way_to_files}/report_{filename_data}.xlsx")
